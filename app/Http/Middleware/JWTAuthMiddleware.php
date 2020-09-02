@@ -22,13 +22,13 @@ class JWTAuthMiddleware
         } catch (Exception $e) {
             if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException){
                 return $next($request);
-                return response()->json(['error'=>'Invalid_Token']);
+                return response()->json(['error' => 'Invalid_Token']);
             }else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException){
                 return $next($request);
-                return response()->json(['error'=>'Token_Expried']);
+                return response()->json(['error' => 'Token_Expried']);
             }else{
                 return $next($request);
-                return response()->json(['error'=>'Unknown_Error']);
+                return response()->json(['error' => 'Unknown_Error']);
             }
         }
         return $next($request);
