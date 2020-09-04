@@ -34,6 +34,8 @@ Route::group(['middleware' => 'api-header'], function () {
     // Therefore the jwtMiddleware will be exclusive of them
     Route::post('users/login', 'AuthController@login');
     Route::post('users/register', 'AuthController@register');
-    Route::get('post/list-post-home', 'PostController@listPostHome');
-    Route::get('post/{id}', 'PostController@detailPost');
+    // Posts
+    Route::get('/posts', 'PostController@fetchPost');
+    Route::post('/posts', 'PostController@createPost');
+    Route::get('/posts/{slug}', 'PostController@detailPost');
 });

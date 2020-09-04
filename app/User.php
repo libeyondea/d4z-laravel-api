@@ -42,6 +42,11 @@ class User extends Authenticatable implements JWTSubject
         'remember_token',
     ];
 
+    public function Post()
+    {
+    	return $this->hasMany('App\Post', 'user_id', 'id');
+    }
+
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
