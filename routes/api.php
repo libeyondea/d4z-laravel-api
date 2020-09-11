@@ -38,4 +38,7 @@ Route::group(['middleware' => 'api-header'], function () {
     Route::get('/posts', 'PostController@fetchPost');
     Route::post('/posts', 'PostController@createPost');
     Route::get('/posts/{slug}', 'PostController@detailPost');
+    Route::get('/posts/{slug}/edit', 'PostController@editPost');
+    Route::put('/posts/{slug}', 'PostController@updatePost');
+    Route::delete('/posts/{slug}', 'PostController@deletePost');
 });
