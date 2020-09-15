@@ -73,7 +73,7 @@ class AuthController extends Controller
             'phone_number' => $request->phone_number,
             'address' => $request->address,
             'gender' => $request->gender,
-            'role_id' => '1',
+            'role_id' => '2',
         ];
         $validator = Validator::make($payload, $rules, $messages);
         if ($validator->fails()) {

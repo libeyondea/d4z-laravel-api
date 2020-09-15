@@ -25,7 +25,7 @@ class PostController extends Controller
 
     public function detailPost($slug)
     {
-        $post = User::select('user.user_name', 'post.title', 'post.summary', 'post.created_at', 'post.slug', 'post.id', 'post.content')
+        $post = User::select('post.user_id', 'user.user_name', 'post.title', 'post.summary', 'post.created_at', 'post.slug', 'post.id', 'post.content')
                     ->join('post','post.user_id','user.id')
                     ->where('slug', $slug)
                     ->firstOrFail();
@@ -34,7 +34,7 @@ class PostController extends Controller
 
     public function editPost($slug)
     {
-        $post = User::select('user.user_name', 'post.title', 'post.summary', 'post.created_at', 'post.slug', 'post.id', 'post.content')
+        $post = User::select('user.user_name', 'post.title', 'post.summary', 'post.created_at', 'post.slug', 'post.id', 'post.content', 'post.meta_title', 'post.meta_description', 'post.image')
                     ->join('post','post.user_id','user.id')
                     ->where('slug', $slug)
                     ->firstOrFail();
