@@ -47,7 +47,7 @@ class AuthController extends Controller
             $response = [
                 'success' => false,
                 'errors' => [
-                    'user' => 'Record doesnt exists'
+                    'user' => 'Email or password does not exists'
                 ]
             ];
         }

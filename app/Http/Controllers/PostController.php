@@ -46,7 +46,6 @@ class PostController extends Controller
         $updatePost = Post::where('slug', $slug)->firstOrFail();
         $updatePost->update($request->all());
         $updatePost->save();
-
         return response()->json(['success' => true, 'data' => $updatePost], 200);
     }
 
