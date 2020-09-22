@@ -13,7 +13,7 @@ class PostController extends Controller
         $fetchPost = User::select('user.user_name', 'post.title', 'post.summary', 'post.created_at', 'post.slug', 'post.id')
                     ->join('post','post.user_id','user.id')
                     ->orderBY('created_at', 'desc')
-                    ->get();
+                    ->paginate(66);
         return response()->json(['success' => true, 'data' => $fetchPost], 200);
     }
 
