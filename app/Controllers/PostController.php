@@ -16,11 +16,10 @@ class PostController extends Controller
 {
     public function fetchPost()
     {
-        //$fetchPost = User::select('user.user_name', 'post.title', 'post.summary', 'post.created_at', 'post.slug', 'post.id')
-        //            ->join('post','post.user_id','user.id')
-        //            ->orderBY('created_at', 'desc')
-        //            ->paginate(66);
-        $fetchPost = PostResource::collection(Post::orderBY('created_at', 'desc')->get());
+        $fetchPost = User::select('user.user_name', 'post.title', 'post.summary', 'post.created_at', 'post.slug', 'post.id')
+                    ->join('post','post.user_id','user.id')
+                    ->orderBY('created_at', 'desc')
+                    ->paginate(66);
         return response()->json(['success' => true, 'data' => $fetchPost], 200);
     }
 
@@ -50,7 +49,7 @@ class PostController extends Controller
         $createPost = new Post($payload);
         $createPost->save();
         $lastIdPost = $createPost->id;
-        foreach ($request->post_tag as $key => $tag) {
+        foreach ($request->tag as $key => $tag) {
             $post_tag = new PostTag;
             $post_tag->post_id = $lastIdPost;
             $post_tag->tag_id = $tag['id'];
@@ -64,13 +63,24 @@ class PostController extends Controller
 
     public function detailPost($slug)
     {
-        $post = new PostResource(Post::where('slug', $slug)->firstOrFail());
+        $post = User::select('post.user_id', 'user.user_name', 'post.title', 'post.summary', 'post.created_at', 'post.slug', 'post.id', 'post.content')
+                    ->join('post','post.user_id','user.id')
+                    ->where('slug', $slug)
+                    ->firstOrFail();
         return response()->json(['success' => true, 'data' => $post], 200);
     }
 
     public function editPost(Request $request, $slug)
     {
         $user = JWTAuth::toUser($request->token);
+        //$post = User::select('post.user_id', 'user.user_name', 'post.title', 'post.summary', 'post.created_at', 'post.slug', 'post.id', 'post.content', 'post.meta_title', 'post.meta_description', 'post.image')
+        //            ->join('post','post.user_id','user.id')
+        //            ->where('slug', $slug)
+        //            ->firstOrFail();
+        //$tag = Tag::select('tag.title', 'post_tag.tag_id')
+        //            ->join('post_tag','post_tag.tag_id','tag.id')
+        //            ->where('post_tag.post_id', $post->id)->get();
+
         $post = new PostResource(Post::where('slug', $slug)->firstOrFail());
         if($user->role_id == 1 || $post->user_id == $user->id) {
             return response()->json(['success' => true, 'data' => $post], 200);

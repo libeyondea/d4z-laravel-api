@@ -3,7 +3,6 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\User;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -15,16 +14,22 @@ use App\User;
 |
 */
 
-Route::middleware('auth:api')->get('/users', function (Request $request) {
+Route::middleware('auth:api')->get('users', function (Request $request) {
     return $request->user();
 });
 
 Route::group(['middleware' => ['jwt.auth', 'api-header']], function () {
     // all routes to protected resources are registered here
-    Route::get('users/list', function(){
-        $users = User::all();
-        $response = ['success' => true, 'data' => $users];
-        return response()->json($response, 200);
+    Route::post('posts', 'PostController@createPost');
+    Route::get('posts/{slug}/edit', 'PostController@editPost');
+    Route::put('posts/{slug}', 'PostController@updatePost');
+    Route::delete('posts/{slug}', 'PostController@deletePost');
+
+    Route::get('tags/fetch-tag-form', 'TagController@fetchTagForm');
+
+    Route::get('me', function(Request $request){
+        $user = JWTAuth::toUser($request->token);
+        return response()->json(['user' => $user]);
     });
 });
 
@@ -35,10 +40,6 @@ Route::group(['middleware' => 'api-header'], function () {
     Route::post('users/login', 'AuthController@login');
     Route::post('users/register', 'AuthController@register');
     // Posts
-    Route::get('/posts', 'PostController@fetchPost');
-    Route::post('/posts', 'PostController@createPost');
-    Route::get('/posts/{slug}', 'PostController@detailPost');
-    Route::get('/posts/{slug}/edit', 'PostController@editPost');
-    Route::put('/posts/{slug}', 'PostController@updatePost');
-    Route::delete('/posts/{slug}', 'PostController@deletePost');
+    Route::get('posts', 'PostController@fetchPost');
+    Route::get('posts/{slug}', 'PostController@detailPost');
 });

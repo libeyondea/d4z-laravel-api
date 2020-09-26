@@ -9,22 +9,20 @@ class Post extends Model
     protected $table = 'post';
     protected $primaryKey = 'id';
     public $timestamps = false;
-
-    protected $fillable = [
-        'title',
-        'meta_title',
-        'meta_description',
-        'slug',
-        'summary',
-        'image',
-        'content',
-        'published',
-        'published_at',
-        'user_id',
-    ];
+    public $incrementing = false;
 
     public function User()
     {
-    	return $this->belongsTo('App\User', 'id', 'user_id');
+    	return $this->belongsTo('App\User', 'user_id', 'id');
+    }
+
+    public function PostTag()
+    {
+    	return $this->hasMany('App\PostTag', 'post_id', 'id');
+    }
+
+    public function PostCategory()
+    {
+    	return $this->hasMany('App\PostCategory', 'post_id', 'id');
     }
 }
