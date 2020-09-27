@@ -10,6 +10,7 @@ class PostCategory extends Model
     protected $primaryKey = ['post_id', 'category_id'];
     public $timestamps = false;
     public $incrementing = false;
+    protected $guarded = [];
 
     public function Post()
     {

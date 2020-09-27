@@ -10,7 +10,7 @@ use App\Http\Resources\TagResource;
 
 class TagController extends Controller
 {
-    public function fetchTagForm()
+    public function fetchTag()
     {
         $fetchTag = TagResource::collection(Tag::all());
         return response()->json(['success' => true, 'data' => $fetchTag], 200);

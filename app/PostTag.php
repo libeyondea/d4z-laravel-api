@@ -10,6 +10,7 @@ class PostTag extends Model
     protected $primaryKey = ['post_id', 'tag_id'];
     public $timestamps = false;
     public $incrementing = false;
+    protected $guarded = [];
 
     public function Post()
     {

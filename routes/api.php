@@ -25,7 +25,6 @@ Route::group(['middleware' => ['jwt.auth', 'api-header']], function () {
     Route::put('posts/{slug}', 'PostController@updatePost');
     Route::delete('posts/{slug}', 'PostController@deletePost');
 
-    Route::get('tags/fetch-tag-form', 'TagController@fetchTagForm');
 
     Route::get('me', function(Request $request){
         $user = JWTAuth::toUser($request->token);
@@ -42,4 +41,8 @@ Route::group(['middleware' => 'api-header'], function () {
     // Posts
     Route::get('posts', 'PostController@fetchPost');
     Route::get('posts/{slug}', 'PostController@detailPost');
+    // Tags
+    Route::get('tags', 'TagController@fetchTag');
+    // Categories
+    Route::get('categories', 'CategoryController@fetchCategory');
 });

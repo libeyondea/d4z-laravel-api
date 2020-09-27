@@ -9,7 +9,8 @@ class Post extends Model
     protected $table = 'post';
     protected $primaryKey = 'id';
     public $timestamps = false;
-    public $incrementing = false;
+    //public $incrementing = false;
+    protected $guarded = [];
 
     public function User()
     {

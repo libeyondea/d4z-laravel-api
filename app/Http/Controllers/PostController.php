@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Post;
 use App\PostTag;
 use App\Tag;
+use App\PostCategory;
+use App\Category;
 use App\User;
 use JWTAuth;
 use Carbon\Carbon;
@@ -16,10 +18,6 @@ class PostController extends Controller
 {
     public function fetchPost()
     {
-        //$fetchPost = User::select('user.user_name', 'post.title', 'post.summary', 'post.created_at', 'post.slug', 'post.id')
-        //            ->join('post','post.user_id','user.id')
-        //            ->orderBY('created_at', 'desc')
-        //            ->paginate(66);
         $fetchPost = PostResource::collection(Post::orderBY('created_at', 'desc')->get());
         return response()->json(['success' => true, 'data' => $fetchPost], 200);
     }
@@ -51,14 +49,20 @@ class PostController extends Controller
         $createPost->save();
         $lastIdPost = $createPost->id;
         foreach ($request->post_tag as $key => $tag) {
-            $post_tag = new PostTag;
-            $post_tag->post_id = $lastIdPost;
-            $post_tag->tag_id = $tag['id'];
-            $post_tag->save();
+            $postTag = new PostTag;
+            $postTag->post_id = $lastIdPost;
+            $postTag->tag_id = $tag['id'];
+            $postTag->save();
+        }
+        foreach ($request->post_category as $key => $category) {
+            $postCategory = new PostCategory;
+            $postCategory->post_id = $lastIdPost;
+            $postCategory->category_id = $category['id'];
+            $postCategory->save();
         }
         return response()->json([
             'success' => true,
-            'data' => [$createPost, $post_tag]
+            'data' => [$createPost, $postTag, $postCategory]
         ], 200);
     }
 
@@ -84,9 +88,43 @@ class PostController extends Controller
         $user = JWTAuth::toUser($request->token);
         $updatePost = Post::where('slug', $slug)->firstOrFail();
         if($user->role_id == 1 || $updatePost->user_id == $user->id) {
-            $updatePost->update($request->all());
+            $payload = [
+                'title' => $request->title,
+                'meta_title' => $request->meta_title,
+                'meta_description' => $request->meta_description,
+                'slug' => $request->slug,
+                'summary' => $request->summary,
+                'content' => $request->content,
+                'image' => $request->image
+            ];
+            $updatePost->update($payload);
             $updatePost->save();
-        return response()->json(['success' => true, 'data' => $updatePost], 200);
+
+            $idPost = $updatePost->id;
+            $deletePostTag = PostTag::where('post_id', $idPost);
+            if ($deletePostTag->get()->count() > 0) {
+                $deletePostTag->delete();
+            }
+            foreach ($request->post_tag as $key => $tag) {
+                $postTag = new PostTag;
+                $postTag->post_id = $idPost;
+                $postTag->tag_id = $tag['id'];
+                $postTag->save();
+            }
+            $deletePostCategory = PostCategory::where('post_id', $idPost);
+            if ($deletePostTag->get()->count() > 0) {
+                $deletePostCategory->delete();
+            }
+            foreach ($request->post_category as $key => $category) {
+                $postCategory = new PostCategory;
+                $postCategory->post_id = $idPost;
+                $postCategory->category_id = $category['id'];
+                $postCategory->save();
+            }
+            return response()->json([
+                'success' => true,
+                'data' => [$updatePost, $postTag, $postCategory]
+            ], 200);
         } else {
             return response()->json(['errors' => 'Unauthorized'], 401);
         }
