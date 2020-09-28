@@ -24,8 +24,8 @@ Route::group(['middleware' => ['jwt.auth', 'api-header']], function () {
     Route::get('posts/{slug}/edit', 'PostController@editPost');
     Route::put('posts/{slug}', 'PostController@updatePost');
     Route::delete('posts/{slug}', 'PostController@deletePost');
-
-
+    // Comment
+    Route::post('comments/{slug}', 'CommentController@createComment');
     Route::get('me', function(Request $request){
         $user = JWTAuth::toUser($request->token);
         return response()->json(['user' => $user]);
@@ -45,4 +45,6 @@ Route::group(['middleware' => 'api-header'], function () {
     Route::get('tags', 'TagController@fetchTag');
     // Categories
     Route::get('categories', 'CategoryController@fetchCategory');
+    // Comments
+    Route::get('comments/{slug}', 'CommentController@fetchComment');
 });
