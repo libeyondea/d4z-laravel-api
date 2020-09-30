@@ -31,7 +31,7 @@ class PostController extends Controller
             $published_at = $mytime->toDateTimeString();
         } else {
             $published = '0';
-            $published_at = '';
+            $published_at = null;
         }
         $payload = [
             'title' => $request->title,
@@ -48,13 +48,13 @@ class PostController extends Controller
         $createPost = new Post($payload);
         $createPost->save();
         $lastIdPost = $createPost->id;
-        foreach ($request->post_tag as $key => $tag) {
+        foreach ($request->tag as $key => $tag) {
             $postTag = new PostTag;
             $postTag->post_id = $lastIdPost;
             $postTag->tag_id = $tag['id'];
             $postTag->save();
         }
-        foreach ($request->post_category as $key => $category) {
+        foreach ($request->category as $key => $category) {
             $postCategory = new PostCategory;
             $postCategory->post_id = $lastIdPost;
             $postCategory->category_id = $category['id'];
@@ -105,7 +105,7 @@ class PostController extends Controller
             if ($deletePostTag->get()->count() > 0) {
                 $deletePostTag->delete();
             }
-            foreach ($request->post_tag as $key => $tag) {
+            foreach ($request->tag as $key => $tag) {
                 $postTag = new PostTag;
                 $postTag->post_id = $idPost;
                 $postTag->tag_id = $tag['id'];
@@ -115,7 +115,7 @@ class PostController extends Controller
             if ($deletePostTag->get()->count() > 0) {
                 $deletePostCategory->delete();
             }
-            foreach ($request->post_category as $key => $category) {
+            foreach ($request->category as $key => $category) {
                 $postCategory = new PostCategory;
                 $postCategory->post_id = $idPost;
                 $postCategory->category_id = $category['id'];

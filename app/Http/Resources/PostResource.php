@@ -5,6 +5,8 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\PostTagResource;
 use App\Http\Resources\PostCategoryResource;
+use App\PostCategory;
+use App\Category;
 
 class PostResource extends JsonResource
 {
