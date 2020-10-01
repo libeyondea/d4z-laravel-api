@@ -33,8 +33,8 @@ class PostResource extends JsonResource
             'published_at' => $this->published_at,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'post_category' => PostCategoryResource::collection($this->postcategory()->get()),
-            'post_tag' => PostTagResource::collection($this->posttag()->get())
+            'category' => CategoryResource::collection($this->category()->get()),
+            'tag' => TagResource::collection($this->tag()->get()),
         ];
     }
 }

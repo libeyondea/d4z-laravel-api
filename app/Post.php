@@ -22,13 +22,24 @@ class Post extends Model
     	return $this->hasMany('App\PostTag', 'post_id', 'id');
     }
 
+    public function Tag()
+    {
+        return $this->belongsToMany('App\Tag', 'post_tag');
+    }
+
     public function PostCategory()
     {
     	return $this->hasMany('App\PostCategory', 'post_id', 'id');
+    }
+
+    public function Category()
+    {
+        return $this->belongsToMany('App\Category', 'post_category');
     }
 
     public function Comment()
     {
     	return $this->hasMany('App\Comment', 'post_id', 'id');
     }
+
 }
