@@ -20,14 +20,14 @@ class AuthController extends Controller
             if (!$token = JWTAuth::attempt(['email' => $email, 'password' => $password])) {
                 return response()->json([
                     'response' => 'errors',
-                    'message' => 'Password or email is invalid',
+                    'errorMessage' => 'Password or email is invalid',
                     'token' => $token
                 ]);
             }
         } catch (JWTAuthException $e) {
             return response()->json([
                 'response' => 'errors',
-                'message' => 'Token creation failed',
+                'errorMessage' => 'Token creation failed',
             ]);
         }
         return $token;
@@ -47,7 +47,7 @@ class AuthController extends Controller
         } else {
             $response = [
                 'success' => false,
-                'errors' => [
+                'errorMessage' => [
                     'user' => 'Email or password does not exists'
                 ]
             ];
@@ -80,7 +80,7 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
-                'errors' => $validator->errors()
+                'errorMessage' => $validator->errors()
             ], 200);
         }
         $user = new User($payload);
@@ -96,18 +96,12 @@ class AuthController extends Controller
             $user->save();
             $response = [
                 'success' => true,
-                'data' => [
-                    'id' => $user->id,
-                    'first_name' => $user->first_name,
-                    'last_name' => $user->last_name,
-                    'user_name' => $user->user_name,
-                    'email' => $request->email
-                ]
+                'data' => $user
             ];
         } else {
             $response = [
                 'success' => false,
-                'errors' => 'Couldnt register user',
+                'errorMessage' => 'Couldnt register user',
             ];
         }
         return response()->json($response, 200);

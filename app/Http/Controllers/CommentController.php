@@ -41,6 +41,34 @@ class CommentController extends Controller
         $payload = [
             'post_id' => $post->id,
             'user_id' => $user->id,
+            'parent_id' => null,
+            'content' => $request->content,
+            'published' => $published,
+            'published_at' => $published_at
+        ];
+        $createComment = new Comment($payload);
+        $createComment->save();
+        return response()->json([
+            'success' => true,
+            'data' => $createComment
+        ], 200);
+    }
+
+    public function createReplyComment(Request $request, $slug)
+    {
+        $user = JWTAuth::toUser($request->token);
+        $post = Post::where('slug', $slug)->firstOrFail();
+        $mytime = Carbon::now();
+        if($user->role_id == 1) {
+            $published = '1';
+            $published_at = $mytime->toDateTimeString();
+        } else {
+            $published = '0';
+            $published_at = '';
+        }
+        $payload = [
+            'post_id' => $post->id,
+            'user_id' => $user->id,
             'parent_id' => $request->parent_id,
             'content' => $request->content,
             'published' => $published,

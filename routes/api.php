@@ -26,6 +26,8 @@ Route::group(['middleware' => ['jwt.auth', 'api-header']], function () {
     Route::delete('posts/{slug}', 'PostController@deletePost');
     // Comment
     Route::post('comments/{slug}', 'CommentController@createComment');
+    Route::post('comments/reply/{slug}', 'CommentController@createReplyComment');
+    //
     Route::get('me', function(Request $request){
         $user = JWTAuth::toUser($request->token);
         return response()->json(['user' => $user]);
