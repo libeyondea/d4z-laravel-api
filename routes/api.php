@@ -21,17 +21,12 @@ Route::middleware('auth:api')->get('users', function (Request $request) {
 Route::group(['middleware' => ['jwt.auth', 'api-header']], function () {
     // all routes to protected resources are registered here
     Route::post('posts', 'PostController@createPost');
-    Route::get('posts/{slug}/edit', 'PostController@editPost');
-    Route::put('posts/{slug}', 'PostController@updatePost');
-    Route::delete('posts/{slug}', 'PostController@deletePost');
+    Route::get('posts/{id}/edit', 'PostController@editPost');
+    Route::put('posts/{id}', 'PostController@updatePost');
+    Route::delete('posts/{id}', 'PostController@deletePost');
     // Comment
-    Route::post('comments/{slug}', 'CommentController@createComment');
-    Route::post('comments/reply/{slug}', 'CommentController@createReplyComment');
-    //
-    Route::get('me', function(Request $request){
-        $user = JWTAuth::toUser($request->token);
-        return response()->json(['user' => $user]);
-    });
+    Route::post('comments/{id}', 'CommentController@createComment');
+    Route::post('comments/reply/{id}', 'CommentController@createReplyComment');
 });
 
 Route::group(['middleware' => 'api-header'], function () {
@@ -42,11 +37,14 @@ Route::group(['middleware' => 'api-header'], function () {
     Route::post('users/register', 'AuthController@register');
     // Posts
     Route::get('posts', 'PostController@fetchPost');
-    Route::get('posts/{slug}', 'PostController@detailPost');
+    Route::get('posts/{id}', 'PostController@detailPost');
     // Tags
     Route::get('tags', 'TagController@fetchTag');
     // Categories
     Route::get('categories', 'CategoryController@fetchCategory');
     // Comments
-    Route::get('comments/{slug}', 'CommentController@fetchComment');
+    Route::get('comments/{id}', 'CommentController@fetchComment');
+    // Users
+    Route::get('users', 'AuthController@fetchUser');
+    Route::get('users/{id}/{user_name}', 'AuthController@singleUser');
 });

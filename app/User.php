@@ -10,10 +10,12 @@ use Illuminate\Database\Eloquent\Model;
 class User extends Authenticatable implements JWTSubject
 
 {
+    use \App\Http\Traits\UsesUuid;
     use Notifiable;
     protected $table = 'user';
     protected $primaryKey = 'id';
     public $timestamps = false;
+    //public $incrementing = false;
     /**
      * The attributes that are mass assignable.
      *
@@ -53,6 +55,11 @@ class User extends Authenticatable implements JWTSubject
     	return $this->hasMany('App\Comment', 'user_id', 'id');
     }
 
+    public function Role()
+    {
+    	return $this->belongsTo('App\Role', 'role_id', 'id');
+    }
+
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
@@ -74,7 +81,7 @@ class User extends Authenticatable implements JWTSubject
             'id' => $this->id,
             'user_name' => $this->user_name,
             'email' => $this->email,
-            'role_id' => $this->role_id,
+            'role' => $this->Role()->firstOrFail()->slug
         ];
     }
 }

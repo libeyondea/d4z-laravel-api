@@ -12,7 +12,6 @@ use App\User;
 use JWTAuth;
 use Carbon\Carbon;
 use App\Http\Resources\PostResource;
-use App\Http\Resources\PostCollection;
 
 class PostController extends Controller
 {
@@ -26,7 +25,7 @@ class PostController extends Controller
     {
         $mytime = Carbon::now();
         $user = JWTAuth::toUser($request->token);
-        if($user->role_id == 1) {
+        if($user->Role()->firstOrFail()->slug == 'admin') {
             $published = '1';
             $published_at = $mytime->toDateTimeString();
         } else {
@@ -66,28 +65,28 @@ class PostController extends Controller
         ], 200);
     }
 
-    public function detailPost($slug)
+    public function detailPost($id)
     {
-        $post = new PostResource(Post::where('slug', $slug)->firstOrFail());
+        $post = new PostResource(Post::where('id', $id)->firstOrFail());
         return response()->json(['success' => true, 'data' => $post], 200);
     }
 
-    public function editPost(Request $request, $slug)
+    public function editPost(Request $request, $id)
     {
         $user = JWTAuth::toUser($request->token);
-        $post = new PostResource(Post::where('slug', $slug)->firstOrFail());
-        if($user->role_id == 1 || $post->user_id == $user->id) {
+        $post = new PostResource(Post::where('id', $id)->firstOrFail());
+        if($user->Role()->firstOrFail()->slug == 'admin' || $post->user_id == $user->id) {
             return response()->json(['success' => true, 'data' => $post], 200);
         } else {
             return response()->json(['errors' => 'Unauthorized'], 401);
         }
     }
 
-    public function updatePost(Request $request, $slug)
+    public function updatePost(Request $request, $id)
     {
         $user = JWTAuth::toUser($request->token);
-        $updatePost = Post::where('slug', $slug)->firstOrFail();
-        if($user->role_id == 1 || $updatePost->user_id == $user->id) {
+        $updatePost = Post::where('id', $id)->firstOrFail();
+        if($user->Role()->firstOrFail()->slug == 'admin' || $updatePost->user_id == $user->id) {
             $payload = [
                 'title' => $request->title,
                 'meta_title' => $request->meta_title,
@@ -130,11 +129,11 @@ class PostController extends Controller
         }
     }
 
-    public function deletePost(Request $request, $slug)
+    public function deletePost(Request $request, $id)
     {
         $user = JWTAuth::toUser($request->token);
-        $deletePost = Post::where('slug', $slug)->firstOrFail();
-        if($user->role_id == 1 || $deletePost->user_id == $user->id) {
+        $deletePost = Post::where('id', $id)->firstOrFail();
+        if($user->Role()->firstOrFail()->slug == 'admin' || $deletePost->user_id == $user->id) {
             $deletePost->delete();
             return response()->json(['success' => true, 'data' => $deletePost], 200);
         } else {

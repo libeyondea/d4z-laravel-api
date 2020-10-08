@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use JWTAuth;
 use JWTAuthException;
 use App\User;
+use App\Http\Resources\ProfileResource;
 
 class AuthController extends Controller
 {
@@ -16,7 +17,6 @@ class AuthController extends Controller
         $token = null;
         //$credentials = $request->only('email', 'password');
         try {
-            // xác nhận thông tin người dùng gửi lên có hợp lệ hay không
             if (!$token = JWTAuth::attempt(['email' => $email, 'password' => $password])) {
                 return response()->json([
                     'response' => 'errors',
@@ -105,5 +105,18 @@ class AuthController extends Controller
             ];
         }
         return response()->json($response, 200);
+    }
+
+    public function fetchUser()
+    {
+        $user = User::select('id', 'first_name', 'last_name')->get();
+        return response()->json(['success' => true, 'data' => $user], 200);
+    }
+
+    public function singleUser($id, $user_name)
+    {
+        //$user = JWTAuth::toUser($request->token);
+        $user = new ProfileResource(User::where('id', $id)->where('user_name', $user_name)->firstOrFail());
+        return response()->json(['success' => true, 'data' => $user], 200);
     }
 }

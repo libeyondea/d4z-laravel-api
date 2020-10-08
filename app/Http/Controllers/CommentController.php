@@ -12,9 +12,9 @@ use App\Http\Resources\CommentResource;
 class CommentController extends Controller
 {
 
-    public function fetchComment($slug)
+    public function fetchComment($id)
     {
-        $post = Post::where('slug', $slug)->firstOrFail();
+        $post = Post::where('id', $id)->firstOrFail();
         //$fetchComment = Comment::where('post_id', $post->id)->whereNull('parent_id')->orderBY('created_at', 'desc')->with('AllChildrenComment')->get();
         //$fetchComment = Comment::where('post_id', $slug)->with('AllChildrenComment')->first();
         //$fetchComment->AllChildrenComment; // collection of recursively loaded children
@@ -26,17 +26,17 @@ class CommentController extends Controller
         return response()->json(['success' => true, 'data' => $fetchComment], 200);
     }
 
-    public function createComment(Request $request, $slug)
+    public function createComment(Request $request, $id)
     {
         $user = JWTAuth::toUser($request->token);
-        $post = Post::where('slug', $slug)->firstOrFail();
+        $post = Post::where('id', $id)->firstOrFail();
         $mytime = Carbon::now();
-        if($user->role_id == 1) {
+        if($user->Role()->firstOrFail()->slug == 'admin') {
             $published = '1';
             $published_at = $mytime->toDateTimeString();
         } else {
             $published = '0';
-            $published_at = '';
+            $published_at = null;
         }
         $payload = [
             'post_id' => $post->id,
@@ -54,17 +54,17 @@ class CommentController extends Controller
         ], 200);
     }
 
-    public function createReplyComment(Request $request, $slug)
+    public function createReplyComment(Request $request, $id)
     {
         $user = JWTAuth::toUser($request->token);
-        $post = Post::where('slug', $slug)->firstOrFail();
+        $post = Post::where('id', $id)->firstOrFail();
         $mytime = Carbon::now();
-        if($user->role_id == 1) {
+        if($user->Role()->firstOrFail()->slug == 'admin') {
             $published = '1';
             $published_at = $mytime->toDateTimeString();
         } else {
             $published = '0';
-            $published_at = '';
+            $published_at = null;
         }
         $payload = [
             'post_id' => $post->id,
