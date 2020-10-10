@@ -10,12 +10,12 @@ use Illuminate\Database\Eloquent\Model;
 class User extends Authenticatable implements JWTSubject
 
 {
-    use \App\Http\Traits\UsesUuid;
+    //use \App\Http\Traits\UsesUuid;
     use Notifiable;
     protected $table = 'user';
     protected $primaryKey = 'id';
     public $timestamps = false;
-    //public $incrementing = false;
+    public $incrementing = false;
     /**
      * The attributes that are mass assignable.
      *

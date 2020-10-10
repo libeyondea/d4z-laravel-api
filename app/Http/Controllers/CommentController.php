@@ -39,6 +39,7 @@ class CommentController extends Controller
             $published_at = null;
         }
         $payload = [
+            'id' => $request->id,
             'post_id' => $post->id,
             'user_id' => $user->id,
             'parent_id' => null,
@@ -67,6 +68,7 @@ class CommentController extends Controller
             $published_at = null;
         }
         $payload = [
+            'id' => $request->id,
             'post_id' => $post->id,
             'user_id' => $user->id,
             'parent_id' => $request->parent_id,

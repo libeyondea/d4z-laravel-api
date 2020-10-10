@@ -33,6 +33,7 @@ class PostController extends Controller
             $published_at = null;
         }
         $payload = [
+            'id' => $request->id,
             'title' => $request->title,
             'meta_title' => $request->meta_title,
             'meta_description' => $request->meta_description,

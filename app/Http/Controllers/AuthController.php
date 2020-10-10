@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use JWTAuth;
 use JWTAuthException;
 use App\User;
+use App\Role;
 use App\Http\Resources\ProfileResource;
 
 class AuthController extends Controller
@@ -35,7 +36,7 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $user = User::where('email', $request->email)->get()->first();
+        $user = User::where('email', $request->email)->firstOrFail();
         if ($user && Hash::check($request->password, $user->password)) {
             $token = self::getToken($request->email, $request->password);
             $user->auth_token = $token;
@@ -66,6 +67,7 @@ class AuthController extends Controller
             'email.unique' => 'Email already exists',
         ];
         $payload = [
+            'id' => $request->id,
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'user_name' => $request->user_name,
@@ -74,7 +76,7 @@ class AuthController extends Controller
             'phone_number' => $request->phone_number,
             'address' => $request->address,
             'gender' => $request->gender,
-            'role_id' => '2',
+            'role_id' => Role::where('slug', 'guest')->first()->id,
         ];
         $validator = Validator::make($payload, $rules, $messages);
         if ($validator->fails()) {

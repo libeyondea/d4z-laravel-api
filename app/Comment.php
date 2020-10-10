@@ -6,11 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
 {
-    use \App\Http\Traits\UsesUuid;
+    //use \App\Http\Traits\UsesUuid;
 
     protected $table = 'comment';
     protected $primaryKey = 'id';
     public $timestamps = false;
+    public $incrementing = false;
     protected $guarded = [];
 
     public function Post()
