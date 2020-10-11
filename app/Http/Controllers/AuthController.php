@@ -36,7 +36,7 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $user = User::where('email', $request->email)->firstOrFail();
+        $user = User::where('email', $request->email)->get()->first();
         if ($user && Hash::check($request->password, $user->password)) {
             $token = self::getToken($request->email, $request->password);
             $user->auth_token = $token;
