@@ -30,6 +30,7 @@ class ProfileResource extends JsonResource
             'phone_number' => $this->phone_number,
             'address' => $this->address,
             'gender' => $this->gender,
+            'image' => $this->image,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'role' => new RoleResource($this->Role()->firstOrFail()),

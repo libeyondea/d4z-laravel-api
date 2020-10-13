@@ -111,7 +111,7 @@ class AuthController extends Controller
 
     public function fetchUser()
     {
-        $user = User::select('id', 'first_name', 'last_name')->get();
+        $user = User::all();
         return response()->json(['success' => true, 'data' => $user], 200);
     }
 
