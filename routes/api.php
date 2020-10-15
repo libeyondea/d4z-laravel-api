@@ -40,6 +40,7 @@ Route::group(['middleware' => 'api-header'], function () {
     Route::get('posts/{id}', 'PostController@detailPost');
     // Tags
     Route::get('tags', 'TagController@fetchTag');
+    Route::get('tags/{id}', 'TagController@singleTag');
     // Categories
     Route::get('categories', 'CategoryController@fetchCategory');
     // Comments
