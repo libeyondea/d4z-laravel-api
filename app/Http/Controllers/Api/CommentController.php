@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Comment;
-use App\Post;
+use App\Models\Comment;
+use App\Models\Post;
 use JWTAuth;
 use Carbon\Carbon;
 use App\Http\Resources\CommentResource;

@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Tag;
-use App\User;
+use App\Models\Tag;
+use App\Models\User;
 use JWTAuth;
 use App\Http\Resources\Tag\TagResource;
 use App\Http\Resources\Tag\SingleTagResource;

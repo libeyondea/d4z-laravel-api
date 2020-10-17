@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Post;
-use App\PostTag;
-use App\Tag;
-use App\PostCategory;
-use App\Category;
-use App\User;
+use App\Models\Post;
+use App\Models\PostTag;
+use App\Models\Tag;
+use App\Models\PostCategory;
+use App\Models\Category;
+use App\Models\User;
 use JWTAuth;
 use Carbon\Carbon;
 use App\Http\Resources\PostResource;

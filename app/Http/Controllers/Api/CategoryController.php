@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Category;
-use App\User;
+use App\Models\Category;
+use App\Models\User;
 use JWTAuth;
 use App\Http\Resources\CategoryResource;
 

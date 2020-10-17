@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,11 +14,11 @@ class Tag extends Model
 
     public function PostTag()
     {
-    	return $this->hasMany('App\PostTag', 'tag_id', 'id');
+    	return $this->hasMany('App\Models\PostTag', 'tag_id', 'id');
     }
 
     public function Post()
     {
-        return $this->belongsToMany('App\Post', 'post_tag');
+        return $this->belongsToMany('App\Models\Post', 'post_tag');
     }
 }

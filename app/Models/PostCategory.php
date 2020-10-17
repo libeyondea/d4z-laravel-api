@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,11 +14,11 @@ class PostCategory extends Model
 
     public function Post()
     {
-    	return $this->belongsTo('App\Post', 'post_id', 'id');
+    	return $this->belongsTo('App\Models\Post', 'post_id', 'id');
     }
 
     public function Category()
     {
-    	return $this->belongsTo('App\Category', 'category_id', 'id');
+    	return $this->belongsTo('App\Models\Category', 'category_id', 'id');
     }
 }

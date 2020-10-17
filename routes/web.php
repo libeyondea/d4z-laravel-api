@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,12 +15,4 @@ use App\User;
 
 Route::get('/', function () {
     return view('welcome');
-});
-
-Route::get('gg', function () {
-    return User::create([
-        'name' => 'Janesad',
-        'email' => 'john@jane.comsad',
-        'password' => bcrypt('passwordss'),
-    ]);
 });

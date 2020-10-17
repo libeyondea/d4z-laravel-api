@@ -6,7 +6,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\RoleResource;
 use App\Post;
 
-class ProfileResource extends JsonResource
+class UserResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

@@ -1,17 +1,17 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable implements JWTSubject
-
 {
-    //use \App\Http\Traits\UsesUuid;
-    use Notifiable;
+    use HasFactory, Notifiable;
+
     protected $table = 'user';
     protected $primaryKey = 'id';
     public $timestamps = false;
@@ -45,19 +45,28 @@ class User extends Authenticatable implements JWTSubject
         'remember_token',
     ];
 
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+
     public function Post()
     {
-    	return $this->hasMany('App\Post', 'user_id', 'id');
+    	return $this->hasMany('App\Models\Post', 'user_id', 'id');
     }
 
     public function Comment()
     {
-    	return $this->hasMany('App\Comment', 'user_id', 'id');
+    	return $this->hasMany('App\Models\Comment', 'user_id', 'id');
     }
 
     public function Role()
     {
-    	return $this->belongsTo('App\Role', 'role_id', 'id');
+    	return $this->belongsTo('App\Models\Role', 'role_id', 'id');
     }
 
     /**
