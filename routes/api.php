@@ -49,6 +49,7 @@ Route::group(['middleware' => 'api-header'], function () {
     Route::get('tags/{id}', [TagController::class, 'singleTag']);
     // Categories
     Route::get('categories', [CategoryController::class, 'fetchCategory']);
+    Route::get('recursive-categories', [CategoryController::class, 'fetchRecursiveCategory']);
     // Comments
     Route::get('comments/{id}', [CommentController::class, 'fetchComment']);
     // Users
