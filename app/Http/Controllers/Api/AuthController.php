@@ -60,12 +60,12 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $rules = [
-            'user_name' => ['unique:user'],
-            'email' => ['unique:user'],
+            'user_name' => 'unique:user',
+            'email' => 'unique:user'
         ];
         $messages = [
             'user_name.unique' => 'User name already exists',
-            'email.unique' => 'Email already exists',
+            'email.unique' => 'Email already exists'
         ];
         $payload = [
             'id' => $request->id,

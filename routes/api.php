@@ -50,6 +50,7 @@ Route::group(['middleware' => 'api-header'], function () {
     // Categories
     Route::get('categories', [CategoryController::class, 'fetchCategory']);
     Route::get('recursive-categories', [CategoryController::class, 'fetchRecursiveCategory']);
+    Route::get('categories/{id}', [CategoryController::class, 'singleCategory']);
     // Comments
     Route::get('comments/{id}', [CommentController::class, 'fetchComment']);
     // Users

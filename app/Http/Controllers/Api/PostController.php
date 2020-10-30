@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Post;
 use App\Models\PostTag;
 use App\Models\Tag;
@@ -33,6 +34,12 @@ class PostController extends Controller
             $published = '0';
             $published_at = null;
         }
+        $rules = [
+            'slug' => ['unique:post'],
+        ];
+        $messages = [
+            'slug.unique' => 'Slug already exists',
+        ];
         $payload = [
             'id' => $request->id,
             'title' => $request->title,
@@ -46,14 +53,37 @@ class PostController extends Controller
             'published_at' => $published_at,
             'user_id' => $user->id,
         ];
+        $validator = Validator::make($payload, $rules, $messages);
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errorMessage' => $validator->errors()
+            ], 200);
+        }
         $createPost = new Post($payload);
         $createPost->save();
         $lastIdPost = $createPost->id;
         foreach ($request->tag as $key => $tag) {
-            $postTag = new PostTag;
-            $postTag->post_id = $lastIdPost;
-            $postTag->tag_id = $tag['id'];
-            $postTag->save();
+            //$tagCheck = Tag::where('slug', $tag['slug'])->first();
+            if (isset($tag['__isNew__'])) {
+                if ($tag['__isNew__'] === true) {
+                    $newTag = new Tag;
+                    $newTag->id = $tag['id'];
+                    $newTag->title = $tag['title'];
+                    $newTag->meta_title = $tag['meta_title'];
+                    $newTag->meta_description = $tag['meta_description'];
+                    $newTag->slug = $tag['slug'];
+                    $newTag->content = $tag['content'];
+                    $newTag->save();
+                }
+            }
+            $tagCheckId = Tag::where('id', $tag['id'])->first();
+            if ($tagCheckId !== null) {
+                $postTag = new PostTag;
+                $postTag->post_id = $lastIdPost;
+                $postTag->tag_id = $tag['id'];
+                $postTag->save();
+            }
         }
         foreach ($request->category as $key => $category) {
             $postCategory = new PostCategory;
@@ -89,6 +119,12 @@ class PostController extends Controller
         $user = JWTAuth::toUser($request->token);
         $updatePost = Post::where('id', $id)->firstOrFail();
         if($user->Role()->firstOrFail()->slug == 'admin' || $updatePost->user_id == $user->id) {
+            $rules = [
+                'slug' => 'unique:post,slug,'.$id,
+            ];
+            $messages = [
+                'slug.unique' => 'Slug already exists',
+            ];
             $payload = [
                 'title' => $request->title,
                 'meta_title' => $request->meta_title,
@@ -98,6 +134,13 @@ class PostController extends Controller
                 'content' => $request->content,
                 'image' => $request->image
             ];
+            $validator = Validator::make($payload, $rules, $messages);
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'errorMessage' => $validator->errors()
+                ], 200);
+            }
             $updatePost->update($payload);
             $updatePost->save();
 
@@ -107,11 +150,27 @@ class PostController extends Controller
                 $deletePostTag->delete();
             }
             foreach ($request->tag as $key => $tag) {
-                $postTag = new PostTag;
-                $postTag->post_id = $idPost;
-                $postTag->tag_id = $tag['id'];
-                $postTag->save();
+                if (isset($tag['__isNew__'])) {
+                    if ($tag['__isNew__'] === true) {
+                        $newTag = new Tag;
+                        $newTag->id = $tag['id'];
+                        $newTag->title = $tag['title'];
+                        $newTag->meta_title = $tag['meta_title'];
+                        $newTag->meta_description = $tag['meta_description'];
+                        $newTag->slug = $tag['slug'];
+                        $newTag->content = $tag['content'];
+                        $newTag->save();
+                    }
+                }
+                $tagCheckId = Tag::where('id', $tag['id'])->first();
+                if ($tagCheckId !== null) {
+                    $postTag = new PostTag;
+                    $postTag->post_id = $idPost;
+                    $postTag->tag_id = $tag['id'];
+                    $postTag->save();
+                }
             }
+
             $deletePostCategory = PostCategory::where('post_id', $idPost);
             if ($deletePostTag->get()->count() > 0) {
                 $deletePostCategory->delete();
