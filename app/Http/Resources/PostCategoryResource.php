@@ -17,8 +17,7 @@ class PostCategoryResource extends JsonResource
     {
         return [
             'post_id' => $this->post_id,
-            'category_id' => $this->category_id,
-            'category' => new CategoryResource($this->category()->firstOrFail())
+            'category_id' => $this->category_id
         ];
     }
 }

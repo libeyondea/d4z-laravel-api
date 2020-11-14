@@ -22,8 +22,7 @@ class RoleResource extends JsonResource
             'description' => $this->description,
             'active' => $this->active,
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'permission' => PermissionResource::collection($this->Permission()->get())
+            'updated_at' => $this->updated_at
         ];
     }
 }

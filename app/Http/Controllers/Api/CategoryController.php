@@ -5,17 +5,16 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Category;
-use App\Models\User;
 use JWTAuth;
 use App\Http\Resources\CategoryResource;
+use App\Http\Resources\CategoryCollection;
 use App\Http\Resources\RecursiveCategoryResource;
-use App\Http\Resources\SingleCategoryResource;
 
 class CategoryController extends Controller
 {
     public function fetchCategory()
     {
-        $fetchCategory = CategoryResource::collection(Category::all());
+        $fetchCategory = new CategoryCollection(Category::orderBY('created_at', 'desc')->get());
         return response()->json(['success' => true, 'data' => $fetchCategory], 200);
     }
 
@@ -27,7 +26,7 @@ class CategoryController extends Controller
     }
 
     public function singleCategory($id) {
-        $singleCategory = new SingleCategoryResource(Category::where('id', $id)->firstOrFail());
+        $singleCategory = new CategoryResource(Category::where('id', $id)->firstOrFail());
         return response()->json(['success' => true, 'data' => $singleCategory], 200);
     }
 }

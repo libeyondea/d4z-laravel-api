@@ -19,9 +19,7 @@ class PostTagResource extends JsonResource
     {
         return [
             'post_id' => $this->post_id,
-            'tag_id' => $this->tag_id,
-            'tag' => $this->tag()->firstOrFail()
-            //'tag' => new TagResource($this->tag()->firstOrFail())
+            'tag_id' => $this->tag_id
         ];
     }
 }

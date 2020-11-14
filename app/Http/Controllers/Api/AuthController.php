@@ -11,6 +11,7 @@ use JWTAuthException;
 use App\Models\User;
 use App\Models\Role;
 use App\Http\Resources\UserResource;
+use App\Http\Resources\UserCollection;
 
 class AuthController extends Controller
 {
@@ -112,7 +113,7 @@ class AuthController extends Controller
 
     public function fetchUser()
     {
-        $user = User::all();
+        $user = new UserCollection(User::orderBY('created_at', 'desc')->get());
         return response()->json(['success' => true, 'data' => $user], 200);
     }
 

@@ -14,12 +14,13 @@ use App\Models\User;
 use JWTAuth;
 use Carbon\Carbon;
 use App\Http\Resources\PostResource;
+use App\Http\Resources\PostCollection;
 
 class PostController extends Controller
 {
     public function fetchPost()
     {
-        $fetchPost = PostResource::collection(Post::orderBY('created_at', 'desc')->get());
+        $fetchPost = new PostCollection(Post::all());
         return response()->json(['success' => true, 'data' => $fetchPost], 200);
     }
 

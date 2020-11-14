@@ -20,7 +20,15 @@ class PostResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user' => $this->user()->firstOrFail(),
+            'user' => [
+                'id' => $this->user->id,
+                'first_name' => $this->user->first_name,
+                'last_name' => $this->user->last_name,
+                'user_name' => $this->user->user_name,
+                'email' => $this->user->email,
+                'image' => $this->user->image,
+                'role' => $this->user->role,
+            ],
             'parent_id' => $this->parent_id,
             'title' => $this->title,
             'meta_title' => $this->meta_title,
@@ -33,8 +41,8 @@ class PostResource extends JsonResource
             'published_at' => $this->published_at,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'category' => CategoryResource::collection($this->category()->get()),
-            'tag' => TagResource::collection($this->tag()->get()),
+            'category' => $this->category,
+            'tag' => $this->tag,
         ];
     }
 }
