@@ -18,10 +18,18 @@ use App\Http\Resources\PostCollection;
 
 class PostController extends Controller
 {
-    public function fetchPost()
+    public function fetchPost(Request $request)
     {
-        $fetchPost = new PostCollection(Post::all());
-        return response()->json(['success' => true, 'data' => $fetchPost], 200);
+        $per_page = (int) $request->per_page;
+        $fetchPost = new PostCollection(Post::paginate($per_page));
+        return response()->json($fetchPost, 200);
+    }
+
+    public function fetchTrendingPost(Request $request)
+    {
+        $per_page = (int) $request->per_page;
+        $fetchTrendinghPost = new PostCollection(Post::paginate($per_page));
+        return response()->json($fetchTrendinghPost, 200);
     }
 
     public function createPost(Request $request)

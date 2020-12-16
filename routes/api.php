@@ -43,13 +43,13 @@ Route::group(['middleware' => 'api-header'], function () {
     Route::post('users/register', [AuthController::class, 'register']);
     // Posts
     Route::get('posts', [PostController::class, 'fetchPost']);
+    Route::get('trending-posts', [PostController::class, 'fetchTrendingPost']);
     Route::get('posts/{id}', [PostController::class, 'detailPost']);
     // Tags
     Route::get('tags', [TagController::class, 'fetchTag']);
     Route::get('tags/{id}', [TagController::class, 'singleTag']);
     // Categories
     Route::get('categories', [CategoryController::class, 'fetchCategory']);
-    Route::get('recursive-categories', [CategoryController::class, 'fetchRecursiveCategory']);
     Route::get('categories/{id}', [CategoryController::class, 'singleCategory']);
     // Comments
     Route::get('comments/{id}', [CommentController::class, 'fetchComment']);

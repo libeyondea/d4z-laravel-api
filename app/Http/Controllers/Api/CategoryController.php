@@ -8,7 +8,6 @@ use App\Models\Category;
 use JWTAuth;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\CategoryCollection;
-use App\Http\Resources\RecursiveCategoryResource;
 
 class CategoryController extends Controller
 {
@@ -16,13 +15,6 @@ class CategoryController extends Controller
     {
         $fetchCategory = new CategoryCollection(Category::orderBY('created_at', 'desc')->get());
         return response()->json(['success' => true, 'data' => $fetchCategory], 200);
-    }
-
-    public function fetchRecursiveCategory()
-    {
-        $fetchRecursiveCategory = RecursiveCategoryResource::collection(Category::whereNull('parent_id')
-                                                            ->orderBY('created_at', 'desc')->get());
-        return response()->json(['success' => true, 'data' => $fetchRecursiveCategory], 200);
     }
 
     public function singleCategory($id) {

@@ -12,18 +12,9 @@ class Category extends Model
     public $incrementing = false;
     protected $guarded = [];
 
-    public function PostCategory()
-    {
-    	return $this->hasMany('App\Models\PostCategory', 'category_id', 'id');
-    }
-
     public function Post()
     {
-        return $this->belongsToMany('App\Models\Post', 'post_category');
+    	return $this->hasMany('App\Models\Post', 'category_id', 'id');
     }
 
-    public function ChildrenCategory()
-    {
-    	return $this->hasMany('App\Models\Category', 'parent_id', 'id');
-    }
 }
