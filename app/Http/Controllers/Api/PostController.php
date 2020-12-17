@@ -106,7 +106,7 @@ class PostController extends Controller
         ], 200);
     }
 
-    public function detailPost($id)
+    public function singlePost($id)
     {
         $post = new PostResource(Post::where('id', $id)->firstOrFail());
         return response()->json(['success' => true, 'data' => $post], 200);

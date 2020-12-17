@@ -44,7 +44,7 @@ Route::group(['middleware' => 'api-header'], function () {
     // Posts
     Route::get('posts', [PostController::class, 'fetchPost']);
     Route::get('trending-posts', [PostController::class, 'fetchTrendingPost']);
-    Route::get('posts/{id}', [PostController::class, 'detailPost']);
+    Route::get('posts/{id}', [PostController::class, 'singlePost']);
     // Tags
     Route::get('tags', [TagController::class, 'fetchTag']);
     Route::get('tags/{id}', [TagController::class, 'singleTag']);

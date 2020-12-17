@@ -26,7 +26,7 @@ class UserCollection extends ResourceCollection
                 'phone_number' => $user->phone_number,
                 'address' => $user->address,
                 'gender' => $user->gender,
-                'image' => $user->image,
+                'avatar' => $user->avatar,
                 'created_at' => $user->created_at,
                 'updated_at' => $user->updated_at,
                 'role' => $user->role,
