@@ -15,15 +15,15 @@ use App\Http\Resources\UserCollection;
 
 class AuthController extends Controller
 {
-    private function getToken($email, $password)
+    private function getToken($user_name, $password)
     {
         $token = null;
-        //$credentials = $request->only('email', 'password');
+        //$credentials = $request->only('user_name', 'password');
         try {
-            if (!$token = JWTAuth::attempt(['email' => $email, 'password' => $password])) {
+            if (!$token = JWTAuth::attempt(['user_name' => $user_name, 'password' => $password])) {
                 return response()->json([
                     'response' => 'errors',
-                    'errorMessage' => 'Password or email is invalid',
+                    'errorMessage' => 'Password or user_name is invalid',
                     'token' => $token
                 ]);
             }
@@ -38,9 +38,9 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $user = User::where('email', $request->email)->get()->first();
+        $user = User::where('user_name', $request->user_name)->get()->first();
         if ($user && Hash::check($request->password, $user->password)) {
-            $token = self::getToken($request->email, $request->password);
+            $token = self::getToken($request->user_name, $request->password);
             $user->auth_token = $token;
             $user->save();
             $response = [
@@ -89,13 +89,13 @@ class AuthController extends Controller
         }
         $user = new User($payload);
         if ($user->save()) {
-            $token = self::getToken($request->email, $request->password);
+            $token = self::getToken($request->user_name, $request->password);
             if (!is_string($token))
                 return response()->json([
                     'success' => false,
                     'data' => 'Token generation failed'
                 ], 200);
-            $user = User::where('email', $request->email)->get()->first();
+            $user = User::where('user_name', $request->user_name)->get()->first();
             $user->auth_token = $token;
             $user->save();
             $response = [

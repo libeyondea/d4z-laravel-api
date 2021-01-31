@@ -52,7 +52,7 @@ class PostCollection extends ResourceCollection
                 'per_page' => $this->perPage(),
                 'current_page' => $this->currentPage(),
                 'total_pages' => $this->lastPage()
-            ],
+            ]
         ];
     }
 }
