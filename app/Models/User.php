@@ -11,6 +11,7 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable;
+    use \App\Http\Traits\UsesUuid;
 
     protected $table = 'user';
     protected $primaryKey = 'id';

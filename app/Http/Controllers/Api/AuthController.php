@@ -12,6 +12,8 @@ use App\Models\User;
 use App\Models\Role;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\UserCollection;
+use Exception;
+use HttpException;
 
 class AuthController extends Controller
 {
@@ -58,6 +60,12 @@ class AuthController extends Controller
         return response()->json($response, 200);
     }
 
+    public function checkToken(Request $request)
+    {
+        $user = JWTAuth::toUser($request->token);
+        return response()->json(['success' => true, 'data' => $user->user_name], 200);
+    }
+
     public function register(Request $request)
     {
         $rules = [
@@ -69,7 +77,6 @@ class AuthController extends Controller
             'email.unique' => 'Email already exists'
         ];
         $payload = [
-            'id' => $request->id,
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'user_name' => $request->user_name,
@@ -93,7 +100,7 @@ class AuthController extends Controller
             if (!is_string($token))
                 return response()->json([
                     'success' => false,
-                    'data' => 'Token generation failed'
+                    'errorMessage' => 'Token generation failed'
                 ], 200);
             $user = User::where('user_name', $request->user_name)->get()->first();
             $user->auth_token = $token;

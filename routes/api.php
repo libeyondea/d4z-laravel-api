@@ -26,6 +26,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['middleware' => ['jwt.auth', 'api-header']], function () {
     // all routes to protected resources are registered here
+    Route::post('users/me', [AuthController::class, 'checkToken']);
+    //
     Route::post('posts', [PostController::class, 'createPost']);
     Route::get('posts/{id}/edit', [PostController::class, 'editPost']);
     Route::put('posts/{id}', [PostController::class, 'updatePost']);
