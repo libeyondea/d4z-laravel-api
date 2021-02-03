@@ -85,6 +85,7 @@ class AuthController extends Controller
             'phone_number' => $request->phone_number,
             'address' => $request->address,
             'gender' => $request->gender,
+            'avatar' => $request->avatar,
             'role_id' => Role::where('slug', 'guest')->first()->id,
         ];
         $validator = Validator::make($payload, $rules, $messages);
