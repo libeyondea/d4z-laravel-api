@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
-    //use \App\Http\Traits\UsesUuid;
+    use \App\Http\Traits\UsesUuid;
 
     protected $table = 'post';
     protected $primaryKey = 'id';
