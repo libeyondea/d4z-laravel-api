@@ -28,7 +28,7 @@ class UserResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'role' => $this->role,
-            'post' => new PostCollection($this->post()->orderBY('created_at', 'desc')->get()),
+            'post' => new PostCollection($this->post()->orderBY('created_at', 'desc')->paginate()),
         ];
     }
 }
